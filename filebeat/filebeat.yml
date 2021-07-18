@@ -1,0 +1,24 @@
+filebeat.prospectors:
+- type: log
+  enabled: true
+  tags:
+    - app_1_nginx
+  paths:
+    - /usr/share/services/nginx/*.log
+
+- type: log
+  enabled: true
+  tags:
+    - app_1_pm2
+  paths:
+    - /usr/share/services/node/*.log
+
+output.kafka:
+  version: 0.10.2.1
+  hosts: ["172.17.0.1:9092"]
+  topic: 'applogs'
+  partition.round_robin:
+    reachable_only: false
+  required_acks: 1
+  compression: gzip
+  max_message_bytes: 1000000

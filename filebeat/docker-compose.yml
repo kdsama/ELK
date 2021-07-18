@@ -1,0 +1,19 @@
+version: "3"
+services:
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:6.6.0
+    container_name: filebeat
+    user: root
+    environment:
+        - strict.perms=false
+    volumes:
+        - './filebeat.yml:/usr/share/filebeat/filebeat.yml:ro'
+        - './data:/usr/share/filebeat/data:rw'
+        - '/var/log/nginx:/usr/share/services/nginx'
+        - '/home/ubuntu/.pm2/logs:/usr/share/services/node'
+    command: filebeat -e
+    logging:
+      driver: "json-file"
+      options:
+          max-file: "5"
+          max-size: "10m"     
